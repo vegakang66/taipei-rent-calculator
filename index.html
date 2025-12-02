@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>社宅建議租金計算機 - 星鴻台北團隊</title>
+    <title>🏠 社宅建議租金計算機</title>
     <style>
+        :root {
+            --color-primary: #667eea;
+            --color-primary-dark: #764ba2;
+            --color-bg: #f8f9fa;
+            --color-text: #333;
+            --color-text-light: #666;
+            --color-white: #ffffff;
+            --color-border: #e0e0e0;
+            --color-success: #4CAF50;
+            --color-neutral: #f0f0f0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #1a1a1a;
+                --color-text: #f0f0f0;
+                --color-text-light: #999;
+                --color-white: #2a2a2a;
+                --color-border: #444;
+                --color-neutral: #333;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,569 +35,552 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            background: var(--color-bg);
+            min-height: 100vh;
             padding: 20px;
-            line-height: 1.6;
+            color: var(--color-text);
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .layout-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            align-items: flex-start;
-        }
-
-        .form-column {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .result-column {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        @media (max-width: 767px) {
-            .layout-wrapper {
-                flex-direction: column;
-            }
-            
-            .form-column,
-            .result-column {
-                width: 100%;
-            }
-        }
-
-        header {
+        .header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            border-radius: 12px;
-            border: 1px solid #333;
-        }
-
-        h1 {
-            color: #3b82f6;
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .subtitle {
-            color: #9ca3af;
-            font-size: 14px;
-        }
-
-        .calculator-form {
-            background-color: #2d2d2d;
-            padding: 30px;
-            border-radius: 12px;
+            color: var(--color-primary);
             margin-bottom: 30px;
-            border: 1px solid #333;
+            animation: slideDown 0.6s ease;
         }
 
-        .form-section {
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            font-weight: 300;
+            color: var(--color-text-light);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .form-card, .result-card {
+            background: var(--color-white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            animation: fadeIn 0.8s ease;
+            border: 1px solid var(--color-border);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
             margin-bottom: 25px;
         }
 
-        .form-section:last-child {
-            margin-bottom: 0;
-        }
-
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #d1d5db;
-            font-weight: 500;
-            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.95em;
         }
 
-        .required {
-            color: #3b82f6;
-        }
-
-        input[type="number"],
-        select {
+        .form-group select,
+        .form-group input {
             width: 100%;
-            padding: 12px 16px;
-            background-color: #1a1a1a;
-            border: 1px solid #404040;
+            padding: 12px 15px;
+            border: 2px solid var(--color-border);
             border-radius: 8px;
-            color: #e0e0e0;
-            font-size: 16px;
-            margin-bottom: 3px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            color: var(--color-text);
+            background: var(--color-white);
         }
-        input[type="number"]:focus,
-        select:focus {
-            border-color: #3b82f6;
+
+        .form-group select:focus,
+        .form-group input:focus {
             outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .button-row {
+        .range-slider {
             display: flex;
-            gap: 16px;
-            margin-top: 18px;
+            gap: 15px;
+            align-items: center;
         }
 
-        button {
-            background-color: #3b82f6;
-            color: #fff;
-            border-radius: 8px;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
+        .range-slider input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
             cursor: pointer;
-            transition: background 0.15s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        button:hover {
-            background-color: #2563eb;
+        .range-slider input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .result-section {
-            background-color: #2d2d2d;
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid #333;
-            margin-bottom: 20px;
-        }
-
-        .result-title {
-            color: #3b82f6;
-            font-size: 18px;
+        .range-value {
+            min-width: 50px;
+            text-align: center;
             font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
+            color: var(--color-primary);
         }
 
-        .result-main {
-            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 25px;
+        .result-card h2 {
+            font-size: 1.3em;
+            color: var(--color-text);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         .result-label {
-            color: #dbeafe;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .result-amount {
-            color: #ffffff;
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .result-details {
-            background-color: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .result-details h3 {
-            color: #d1d5db;
-            font-size: 16px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .detail-item {
             display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #2d2d2d;
-            font-size: 14px;
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            color: #9ca3af;
-        }
-
-        .detail-value {
-            color: #e0e0e0;
+            align-items: center;
+            font-size: 0.95em;
+            color: var(--color-text-light);
+            margin-bottom: 8px;
             font-weight: 500;
         }
 
-        .info-box {
-            background-color: #1e293b;
-            border: 1px solid #3b82f6;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #dbeafe;
+        .result-label span:first-child {
+            font-size: 1.3em;
+            margin-right: 8px;
         }
 
-        .info-box strong {
-            color: #3b82f6;
+        .result-value {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--color-primary);
+            word-break: break-word;
         }
 
-        .button-group {
+        .rental-summary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: var(--color-white);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .rental-summary label {
+            display: block;
+            font-size: 0.9em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .rental-price {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .buttons {
             display: flex;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .btn {
             flex: 1;
-            padding: 14px 24px;
+            padding: 12px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 0.95em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .btn-primary {
-            background-color: #3b82f6;
-            color: #1a1a1a;
+        .btn-copy {
+            background: #4CAF50;
+            color: white;
         }
 
-        .btn-primary:hover {
-            background-color: #2563eb;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        .btn-copy:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
 
-        .btn-secondary {
-            background-color: #404040;
-            color: #e0e0e0;
+        .btn-reset {
+            background: var(--color-neutral);
+            color: var(--color-text);
         }
 
-        .btn-secondary:hover {
-            background-color: #525252;
+        .btn-reset:hover {
+            background: var(--color-border);
+            transform: translateY(-2px);
         }
 
-        .btn:active {
-            transform: translateY(0);
+        .note {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--color-text-light);
+            line-height: 1.6;
         }
 
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #3b82f6;
-            color: #1a1a1a;
-            padding: 16px 24px;
+        .note strong {
+            color: var(--color-text);
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px 15px;
             border-radius: 8px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            margin-top: 10px;
+            display: none;
             animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
             from {
-                transform: translateX(400px);
                 opacity: 0;
+                transform: translateY(-10px);
             }
             to {
-                transform: translateX(0);
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(400px);
-                opacity: 0;
-            }
+        .success-message.show {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <div class="header">
             <h1>🏠 社宅建議租金計算機</h1>
-            <div class="subtitle">星鴻台北團隊 - 專業租金評估工具</div>
-        </header>
-        <div class="layout-wrapper">
-            <div class="form-column">
-                <form id="rentForm" class="calculator-form" autocomplete="off" onsubmit="event.preventDefault();">
-                    <div class="form-section">
-                        <label for="buildingType">
-                            建物型態 <span class="required">*</span>
-                        </label>
-                        <select id="buildingType" required>
-                            <option value="whole_floor">整層(棟)住家</option>
-                            <option value="independent">獨立套房(15坪以下)</option>
-                        </select>
-                    </div>
-                    <div class="form-section">
-                        <label for="area">
-                            坪數 <span class="required">*</span>
-                        </label>
-                        <input id="area" type="number" inputmode="decimal" step="0.1" min="1" max="999" required placeholder="請輸入物件的坪數（例如：30）">
-                    </div>
-                    <div class="form-section">
-                        <label for="district">
-                            行政區 <span class="required">*</span>
-                        </label>
-                        <select id="district" required></select>
-                    </div>
-                    <div class="form-section">
-                        <label for="age">
-                            屋齡 <span class="required">*</span>
-                        </label>
-                        <select id="age" required>
-                            <option value="20">[0-5) 年（+20%）</option>
-                            <option value="18">[5-10) 年（+18%）</option>
-                            <option value="16">[10-15) 年（+16%）</option>
-                            <option value="13">[15-20) 年（+13%）</option>
-                            <option value="10">[20-25) 年（+10%）</option>
-                            <option value="7">[25-30) 年（+7%）</option>
-                            <option value="4">[30-35) 年（+4%）</option>
-                            <option value="0">[35-40) 年（0%）</option>
-                            <option value="-5">[40+] 年（-5%）</option>
-                        </select>
-                    </div>
-                    <div class="form-section">
-                        <label for="renovationRate">裝修調整率</label>
-                        <select id="renovationRate">
-                            <option value="0">0%</option>
-                            <option value="3">3%</option>
-                            <option value="5">5%</option>
-                        </select>
-                    </div>
-                    <div class="form-section">
-                        <label for="locationRate">區位調整率</label>
-                        <select id="locationRate">
-                            <option value="0">0%</option>
-                            <option value="3">3%</option>
-                            <option value="5">5%</option>
-                        </select>
-                    </div>
-                </form>
+            <p>星鴻台北團隊 - 專業租金評估工具</p>
+        </div>
+
+        <div class="main-content">
+            <!-- 表單區 -->
+            <div class="form-card">
+                <div class="form-group">
+                    <label for="buildingType">建物型態</label>
+                    <select id="buildingType">
+                        <option value="wholeHouse">整層(棟)住家</option>
+                        <option value="studio">獨立套房(15坪以下)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="area">坪數</label>
+                    <input type="number" id="area" min="1" max="100" value="20" placeholder="輸入坪數">
+                </div>
+
+                <div class="form-group">
+                    <label for="district">行政區</label>
+                    <select id="district">
+                        <option value="daan">大安區</option>
+                        <option value="zhongshan">中山區</option>
+                        <option value="zhongzheng">中正區</option>
+                        <option value="xinyi">信義區</option>
+                        <option value="datong">大同區</option>
+                        <option value="songshan">松山區</option>
+                        <option value="nangang">南港區</option>
+                        <option value="wanhua">萬華區</option>
+                        <option value="shilin">士林區</option>
+                        <option value="neihu">內湖區</option>
+                        <option value="wenshan">文山區</option>
+                        <option value="beitou">北投區</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">屋齡</label>
+                    <select id="age">
+                        <option value="0">0-5年</option>
+                        <option value="1">5-10年</option>
+                        <option value="2">10-15年</option>
+                        <option value="3">15-20年</option>
+                        <option value="4">20-25年</option>
+                        <option value="5">25-30年</option>
+                        <option value="6">30-40年</option>
+                        <option value="7">40年以上</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="renovation">裝修調整率</label>
+                    <select id="renovation">
+                        <option value="0">無裝修 (0%)</option>
+                        <option value="3">簡易裝修 (3%)</option>
+                        <option value="5">中等裝修 (5%)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">區位調整率</label>
+                    <select id="location">
+                        <option value="0">中下區位 (0%)</option>
+                        <option value="3">中上區位 (3%)</option>
+                        <option value="5">優質區位 (5%)</option>
+                    </select>
+                </div>
             </div>
-            <div class="result-column">
-                <div class="result-section" id="resultSection">
-                    <h2 class="result-title">計算結果</h2>
-                    
-                    <div class="result-main">
-                        <div class="result-label">建議租金（月）</div>
-                        <div class="result-amount" id="finalRent">NT$ 0</div>
-                    </div>
 
-                    <div class="result-details">
-                        <h3>計算明細</h3>
-                        <div class="detail-item">
-                            <span class="detail-label">1️⃣ 單坪價格（行政區單價）</span>
-                            <span class="detail-value" id="basePrice">NT$ 0/坪</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">2️⃣ 總調整率（屋齡 + 裝修 + 區位）</span>
-                            <span class="detail-value" id="totalRate">0%</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">3️⃣ 調整後單坪價格</span>
-                            <span class="detail-value" id="adjustedPrice">NT$ 0/坪</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">4️⃣ 建議租金（調整後單坪 × 坪數）</span>
-                            <span class="detail-value" id="finalCalc">NT$ 0</span>
-                        </div>
+            <!-- 結果區 -->
+            <div class="result-card">
+                <h2>計算結果</h2>
+                
+                <div class="rental-summary">
+                    <label>建議租金（月）</label>
+                    <div class="rental-price" id="rentDisplay">NT$ 0</div>
+                    <div class="buttons">
+                        <button class="btn btn-copy" onclick="copyRental()">📋 複製租金</button>
+                        <button class="btn btn-reset" onclick="resetForm()">🔄 重置</button>
                     </div>
+                    <div class="success-message" id="successMessage">✓ 已複製到剪貼簿</div>
+                </div>
 
-                    <div class="button-group">
-                        <button class="btn btn-primary" id="copyBtn">📋 複製租金</button>
-                        <button class="btn btn-secondary" id="resetBtn">🔄 重置</button>
+                <h3 style="margin-top: 25px; margin-bottom: 15px; color: var(--color-text); font-size: 1.1em;">計算明細</h3>
+                
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>1️⃣</span>
+                        <span>單坪價格（行政區單價）</span>
                     </div>
+                    <div class="result-value" id="unitPrice">NT$ 0/坪</div>
+                </div>
 
-                    <div class="info-box">
-                        <strong>💡 提示：</strong>建議租金已根據建物型態、行政區、屋齡、裝修狀況及區位優勢進行綜合評估。實際租金可能因市場狀況而有所調整。
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>2️⃣</span>
+                        <span>總調整率（裝修 + 區位）</span>
                     </div>
+                    <div class="result-value" id="totalRate">0%</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>3️⃣</span>
+                        <span>調整後單坪價格</span>
+                    </div>
+                    <div class="result-value" id="adjustedPrice">NT$ 0/坪</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>4️⃣</span>
+                        <span>建議租金（調整後單坪 × 坪數）</span>
+                    </div>
+                    <div class="result-value" id="suggestedRental">NT$ 0</div>
+                </div>
+
+                <div class="note">
+                    <strong>💡 提示：</strong>建議租金已根據建物型態、行政區、屋齡、裝修狀況及區位優勢進行綜合評估。實際租金可能因市場狀況而有所調整。
                 </div>
             </div>
         </div>
     </div>
+
     <script>
-    // 台北市單價 (30-40年未滿40)
-    const taipeiRentData = {
-        whole_floor: {
-            '大安區': 1575,
-            '中山區': 1575,
-            '中正區': 1555,
-            '信義區': 1555,
-            '大同區': 1535,
-            '松山區': 1535,
-            '南港區': 1410,
-            '萬華區': 1410,
-            '士林區': 1365,
-            '內湖區': 1365,
-            '文山區': 1295,
-            '北投區': 1295
-        },
-        independent: {
-            '大安區': 2165,
-            '中山區': 2070,
-            '松山區': 2020,
-            '信義區': 1945,
-            '中正區': 1905,
-            '大同區': 1890,
-            '南港區': 1890,
-            '萬華區': 1890,
-            '士林區': 1785,
-            '內湖區': 1785,
-            '文山區': 1680,
-            '北投區': 1680
+        // 台北市表四和表五的數據
+        const priceTable = {
+            wholeHouse: {
+                daan: [1725, 1715, 1695, 1670, 1640, 1605, 1575, 1500],
+                zhongshan: [1725, 1715, 1695, 1670, 1640, 1605, 1575, 1500],
+                zhongzheng: [1705, 1690, 1675, 1645, 1615, 1585, 1555, 1480],
+                xinyi: [1705, 1690, 1675, 1645, 1615, 1585, 1555, 1480],
+                datong: [1680, 1665, 1650, 1625, 1595, 1565, 1535, 1460],
+                songshan: [1680, 1665, 1650, 1625, 1595, 1565, 1535, 1460],
+                nangang: [1545, 1530, 1515, 1490, 1465, 1435, 1410, 1340],
+                wanhua: [1545, 1530, 1515, 1490, 1465, 1435, 1410, 1340],
+                shilin: [1495, 1485, 1470, 1445, 1420, 1395, 1365, 1300],
+                neihu: [1495, 1485, 1470, 1445, 1420, 1395, 1365, 1300],
+                wenshan: [1415, 1405, 1390, 1370, 1345, 1320, 1295, 1230],
+                beitou: [1415, 1405, 1390, 1370, 1345, 1320, 1295, 1230]
+            },
+            studio: {
+                daan: [2475, 2435, 2390, 2350, 2290, 2225, 2165, 2060],
+                zhongshan: [2365, 2325, 2290, 2250, 2190, 2130, 2070, 1970],
+                zhongzheng: [2175, 2140, 2100, 2065, 2010, 1955, 1905, 1810],
+                xinyi: [2220, 2185, 2150, 2110, 2055, 2000, 1945, 1850],
+                datong: [2160, 2125, 2090, 2055, 2000, 1945, 1890, 1800],
+                songshan: [2305, 2270, 2230, 2190, 2135, 2075, 2020, 1920],
+                nangang: [2160, 2125, 2090, 2055, 2000, 1945, 1890, 1800],
+                wanhua: [2160, 2125, 2090, 2055, 2000, 1945, 1890, 1800],
+                shilin: [2040, 2010, 1975, 1940, 1890, 1840, 1785, 1700],
+                neihu: [2040, 2010, 1975, 1940, 1890, 1840, 1785, 1700],
+                wenshan: [1920, 1890, 1860, 1825, 1780, 1730, 1680, 1600],
+                beitou: [1920, 1890, 1860, 1825, 1780, 1730, 1680, 1600]
+            }
+        };
+
+        const elements = {
+            buildingType: document.getElementById('buildingType'),
+            area: document.getElementById('area'),
+            district: document.getElementById('district'),
+            age: document.getElementById('age'),
+            renovation: document.getElementById('renovation'),
+            renovationValue: document.getElementById('renovationValue'),
+            location: document.getElementById('location'),
+            locationValue: document.getElementById('locationValue'),
+            unitPrice: document.getElementById('unitPrice'),
+            totalRate: document.getElementById('totalRate'),
+            adjustedPrice: document.getElementById('adjustedPrice'),
+            suggestedRental: document.getElementById('suggestedRental'),
+            rentDisplay: document.getElementById('rentDisplay'),
+            successMessage: document.getElementById('successMessage')
+        };
+
+        function calculate() {
+            const buildingType = elements.buildingType.value;
+            const district = elements.district.value;
+            const ageIndex = parseInt(elements.age.value);
+            const area = parseFloat(elements.area.value) || 0;
+            const renovationRate = parseInt(elements.renovation.value) / 100;
+            const locationRate = parseInt(elements.location.value) / 100;
+
+            // 1️⃣ 單坪價格
+            const unitPrice = priceTable[buildingType][district][ageIndex];
+            
+            // 2️⃣ 總調整率
+            const totalRate = renovationRate + locationRate;
+            const totalRatePercent = Math.round(totalRate * 100);
+
+            // 3️⃣ 調整後單坪價格
+            const adjustedPrice = Math.round(unitPrice * (1 + totalRate));
+
+            // 4️⃣ 建議租金
+            const suggestedRental = Math.round(adjustedPrice * area);
+
+            // 更新顯示
+            elements.unitPrice.textContent = `NT$ ${unitPrice.toLocaleString('zh-TW')}/坪`;
+            elements.totalRate.textContent = `${totalRatePercent}%`;
+            elements.adjustedPrice.textContent = `NT$ ${adjustedPrice.toLocaleString('zh-TW')}/坪`;
+            elements.suggestedRental.textContent = `NT$ ${suggestedRental.toLocaleString('zh-TW')}`;
+            elements.rentDisplay.textContent = `NT$ ${suggestedRental.toLocaleString('zh-TW')}`;
         }
-    };
 
-    // 取得表單元素
-    const buildingTypeSelect = document.getElementById('buildingType');
-    const areaInput = document.getElementById('area');
-    const districtSelect = document.getElementById('district');
-    const ageSelect = document.getElementById('age');
-    const renovationSelect = document.getElementById('renovationRate');
-    const locationSelect = document.getElementById('locationRate');
-    const copyBtn = document.getElementById('copyBtn');
-    const resetBtn = document.getElementById('resetBtn');
-
-    // 結果顯示元素
-    const basePriceEl = document.getElementById('basePrice');
-    const totalRateEl = document.getElementById('totalRate');
-    const adjustedPriceEl = document.getElementById('adjustedPrice');
-    const finalCalcEl = document.getElementById('finalCalc');
-    const finalRentEl = document.getElementById('finalRent');
-
-    // 動態載入行政區
-    function updateDistrictOptions() {
-        const type = buildingTypeSelect.value;
-        districtSelect.innerHTML = '';
-        const options = taipeiRentData[type];
-        for (const key in options) {
-            const val = options[key];
-            const o = document.createElement('option');
-            o.value = key;
-            o.textContent = `${key} (${val}元/坪)`;
-            districtSelect.appendChild(o);
+        function updateRenovationDisplay() {
+            elements.renovationValue.textContent = elements.renovation.value;
+            calculate();
         }
-        calculateRent();
-    }
 
-    buildingTypeSelect.addEventListener('change', updateDistrictOptions);
+        function updateLocationDisplay() {
+            elements.locationValue.textContent = elements.location.value;
+            calculate();
+        }
 
-    // 初始化行政區列表
-    updateDistrictOptions();
-
-    // 計算租金
-    function calculateRent() {
-        const type = buildingTypeSelect.value;
-        const area = parseFloat(areaInput.value) || 0;
-        const district = districtSelect.value;
-        const basePrice = taipeiRentData[type][district] || 0;
-
-        const ageRate = parseFloat(ageSelect.value) || 0;
-        const renovationRate = parseFloat(renovationSelect.value) || 0;
-        const locationRate = parseFloat(locationSelect.value) || 0;
-
-        // 合計總調整率
-        const totalRate = ageRate + renovationRate + locationRate;
-
-        // 計算調整後單坪價格
-        const adjustedPrice = basePrice * (1 + totalRate / 100);
-
-        // 計算最終租金
-        const finalRent = adjustedPrice * area;
-
-        // 更新顯示
-        basePriceEl.textContent = `NT$ ${basePrice.toLocaleString()}/坪`;
-        totalRateEl.textContent = `${totalRate > 0 ? '+' : ''}${totalRate}%`;
-        adjustedPriceEl.textContent = `NT$ ${Math.round(adjustedPrice).toLocaleString()}/坪`;
-        finalCalcEl.textContent = `NT$ ${Math.round(finalRent).toLocaleString()}`;
-        finalRentEl.textContent = `NT$ ${Math.round(finalRent).toLocaleString()}`;
-    }
-
-    // 顯示提示訊息
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 2000);
-    }
-
-    // 複製租金
-    copyBtn.addEventListener('click', () => {
-        const rentText = finalRentEl.textContent;
-        const rentValue = rentText.replace(/[^0-9]/g, '');
-        
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(rentValue).then(() => {
-                showToast('✅ 租金已複製到剪貼簿！');
-            }).catch(() => {
-                fallbackCopy(rentValue);
+        function copyRental() {
+            const rentText = elements.rentDisplay.textContent;
+            navigator.clipboard.writeText(rentText).then(() => {
+                elements.successMessage.classList.add('show');
+                setTimeout(() => {
+                    elements.successMessage.classList.remove('show');
+                }, 2000);
             });
-        } else {
-            fallbackCopy(rentValue);
         }
-    });
 
-    // 備用複製方法
-    function fallbackCopy(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showToast('✅ 租金已複製到剪貼簿！');
-        } catch (err) {
-            showToast('❌ 複製失敗，請手動複製');
+        function resetForm() {
+            elements.buildingType.value = 'wholeHouse';
+            elements.area.value = '20';
+            elements.district.value = 'daan';
+            elements.age.value = '0';
+            elements.renovation.value = '0';
+            elements.renovationValue.textContent = '0';
+            elements.location.value = '0';
+            elements.locationValue.textContent = '0';
+            calculate();
         }
-        document.body.removeChild(textArea);
-    }
 
-    // 重置表單
-    resetBtn.addEventListener('click', () => {
-        buildingTypeSelect.value = 'whole_floor';
-        areaInput.value = '';
-        districtSelect.value = Object.keys(taipeiRentData.whole_floor)[0];
-        ageSelect.value = '0';
-        renovationSelect.value = '0';
-        locationSelect.value = '0';
-        calculateRent();
-        showToast('🔄 表單已重置');
-    });
+        // 事件監聽
+        elements.buildingType.addEventListener('change', calculate);
+        elements.area.addEventListener('input', calculate);
+        elements.district.addEventListener('change', calculate);
+        elements.age.addEventListener('change', calculate);
+        elements.renovation.addEventListener('change', calculate);
+        elements.location.addEventListener('change', calculate);
 
-    // 監聽所有輸入變化 - 自動計算
-    areaInput.addEventListener('input', calculateRent);
-    districtSelect.addEventListener('change', calculateRent);
-    ageSelect.addEventListener('change', calculateRent);
-    renovationSelect.addEventListener('change', calculateRent);
-    locationSelect.addEventListener('change', calculateRent);
-
-    // 初始計算
-    calculateRent();
+        // 初始計算
+        calculate();
     </script>
 </body>
 </html>
