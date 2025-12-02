@@ -6,8 +6,8 @@
     <title>🏠 社宅建議租金計算機</title>
     <style>
         :root {
-            --color-primary: #667eea;
-            --color-primary-dark: #764ba2;
+            --color-primary: #3b82f6;
+            --color-primary-dark: #1e40af;
             --color-bg: #f8f9fa;
             --color-text: #333;
             --color-text-light: #666;
@@ -412,10 +412,6 @@
                 <div class="rental-summary">
                     <label>建議租金（月）</label>
                     <div class="rental-price" id="rentDisplay">NT$ 0</div>
-                    <div class="buttons">
-                        <button class="btn btn-copy" onclick="copyRental()">📋 複製租金</button>
-                        <button class="btn btn-reset" onclick="resetForm()">🔄 重置</button>
-                    </div>
                     <div class="success-message" id="successMessage">✓ 已複製到剪貼簿</div>
                 </div>
 
@@ -451,6 +447,11 @@
                         <span>建議租金（調整後單坪 × 坪數）</span>
                     </div>
                     <div class="result-value" id="suggestedRental">NT$ 0</div>
+                </div>
+
+                <div class="buttons" style="margin-top: 25px;">
+                    <button class="btn btn-copy" onclick="copyRental()">📋 複製租金</button>
+                    <button class="btn btn-reset" onclick="resetForm()">🔄 重置</button>
                 </div>
 
                 <div class="note">
